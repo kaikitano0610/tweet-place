@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
+    /**Ac
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'screen_name',
+        'profile_image'
     ];
 
     /**
@@ -43,5 +45,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(self::class, 'followerd','followed_id','following_id');
+    }
+
+    public function follows()
+    {
+        return $this->belongsToMany(self::class,'followers','following_id','followed_id');
     }
 }
