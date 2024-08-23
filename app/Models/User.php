@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class User extends Authenticatable
 {
@@ -16,12 +18,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'screen_name',
-        'profile_image'
+    protected $guarded = [
+        'id',
     ];
 
     /**
@@ -47,12 +45,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function followers()
+    public function followers():BelongsToMany
     {
-        return $this->belongsToMany(self::class, 'followerd','followed_id','following_id');
+        return $this->belongsToMany(self::class,'followers','followed_id','following_id');
     }
 
-    public function follows()
+    public function follows():BelongsToMany
     {
         return $this->belongsToMany(self::class,'followers','following_id','followed_id');
     }
