@@ -18,6 +18,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('users',UsersController::class,['only' => ['index','show','edit','update']]);
+    #フォロー、フォロー解除
+    Route::post('users/{user}/follow',[UsersController::class,'follow'])->name('follow');
+    Route::delete('users/{user}/unfollow',[UsersController::class,'unfollow'])->name('unfollow');
 });
 
 require __DIR__.'/auth.php';

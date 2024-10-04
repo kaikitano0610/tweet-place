@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 class User extends Authenticatable
@@ -58,5 +58,25 @@ class User extends Authenticatable
     public function getAllUsers(int $user_id)
     {
         return self::where('id','!=',$user_id)->paginate(5);
+    }
+
+    public function follow(Int $user_id)
+    {
+        return $this->follows()->attach($user_id);
+    }
+
+    public function unfollow(Int $user_id)
+    {
+        return $this->follows()->detach($user_id);
+    }
+
+    public function isFollowing(Int $user_id)
+    {
+        return (boolean) $this->follows()->where('followed_id',$user_id)->first(['id']);
+    }
+
+    public function isFollowed(Int $user_id)
+    {
+        return (boolean) $this->followers()->where('following_id',$user_id)->first(['id']);
     }
 }
