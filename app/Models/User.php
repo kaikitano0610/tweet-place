@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(self::class,'followers','following_id','followed_id');
     }
+
+    public function getAllUsers(int $user_id)
+    {
+        return self::where('id','!=',$user_id)->paginate(5);
+    }
 }
