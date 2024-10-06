@@ -4,26 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class Tweet extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    use SoftDeletes;
-
-    protected $fillable = [
-        'text'
+    protected $guarded = [
+        'id'
     ];
 
-    public function user()
+    public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    public function favorites()
+    public function favorites():HasMany
     {
         return $this->hasMany(Favorite::class);
     }
-    public function comments()
+    public function comments():HasMany
     {
         return $this->hasMany(Comment::class);
     }
